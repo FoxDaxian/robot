@@ -70,8 +70,6 @@ def start_watch(path, callback):
 
 if __name__ == '__main__':
     argv = sys.argv[1:]
-    print(argv)
-    print(1231233)
     if not argv:
         print('用法：./app.py src/index.py')
         exit(0)

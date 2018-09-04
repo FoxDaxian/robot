@@ -1,7 +1,5 @@
 # robot
 
-* 使用pipenv来管理python包
-* 使用Jinja2来写html
-
-## TODO
-* 利用make模拟 npm run dev npm run build?
+-   使用 pipenv 来管理 python 包
+-   使用 Jinja2 来写 html
+-   增加 makefile 来收集语句
