@@ -11,19 +11,15 @@
 # r = requests.post("http://openapi.tuling123.com/openapi/api/v2", data=payload)
 # print(r.text)
 
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 
 app = Flask(__name__)
 
 
-@app.route('/')
-def hello():
-    return render_template('test.html', name='12冯世雨')
-
-
-@app.route('/user/<name>')
-def showUserName(name):
-    return '用户名: %s' % name
+@app.route('/robot')
+def robot():
+    baseCss = url_for('static', filename='css/robot.css')
+    return render_template('robot.html', css=baseCss)
 
 
 if __name__ == '__main__':
