@@ -10,7 +10,7 @@ dev:
 	pipenv run python ./dev.py ./index.py && make flask
 
 flask:
-	python ./index.py
+	export FLASK_ENV=development && python ./index.py
 
 demo1:
 	echo '我是demo1'
