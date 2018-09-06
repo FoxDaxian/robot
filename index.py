@@ -2,7 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 import requests
-from flask import Flask, render_template, url_for, jsonify
+import json
+from flask import Flask, render_template, url_for, jsonify, request
 
 app = Flask(__name__)
 
@@ -13,12 +14,14 @@ def robot():
     return render_template('robot.html', css=baseCss)
 
 
-@app.route('/api')
+@app.route('/api', methods=['POST'])
 def api():
+    req = json.loads(str(request.data, encoding="utf-8"))
+    headers = {'Content-Type': 'application/json'}
     payload = {
         'perception': {
             "inputText": {
-                "text": "附近的酒店"
+                "text": req['text']
             }
         },
         'userInfo': {
@@ -27,9 +30,11 @@ def api():
         }
     }
     r = requests.post(
-        "http://openapi.tuling123.com/openapi/api/v2", data=payload)
-    print(r.text)
-    return jsonify({'status': 1, 'data': {'name': '12'}})
+        "http://openapi.tuling123.com/openapi/api/v2",
+        headers=headers,
+        data=json.dumps(payload))
+
+    return jsonify(r.json())
 
 
 if __name__ == '__main__':

@@ -4,5 +4,76 @@
 {% endblock %}
 
 {% block body %}
-<div class="title">一个简易的机器人</div>
+<div class="title">robot</div>
+<div class="content">
+    <div class="view">
+        <div class="robot">你好，有什么可以帮助你的吗</div>
+    </div>
+    <div class="askWrap">
+        <input type="text" placeholder="请输入问题">
+        <div class="commitBtn">提交</div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block js %}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    let canSend = true;
+    const view = document.querySelector('.content .view');
+    const btn = document.querySelector('.commitBtn');
+    const input = document.querySelector('input');
+    const generatorMan = (text) => {
+        const man = document.createElement('div');
+        man.classList.add('man')
+        man.innerHTML = text
+        return man
+    }
+    const generatorRobot = (html) => {
+        const robot = document.createElement('div');
+        robot.classList.add('robot')
+        robot.innerHTML = html
+        return robot
+    }
+
+    const generatorImg = (url) => {
+        const img = document.createElement('img');
+        img.src = url;
+
+        const robot = document.createElement('div');
+        robot.classList.add('robot')
+        robot.appendChild(img);
+
+        return robot
+    }
+
+    btn.onclick = () => {
+        if (!canSend) {
+            return
+        }
+        const text = input.value
+        if (text.trim() === '') {
+            console.log('不能为空');
+        } else {
+            canSend = !canSend
+            axios.post('/api', {
+                text: text
+            }).then((res) => {
+                view.appendChild(generatorMan(text));
+                res.data.results.forEach((item) => {
+                    if(item.resultType === 'text') {
+                        view.appendChild(generatorRobot(item.values.text));
+                    } else if (item.resultType === 'image') {
+                        view.appendChild(generatorImg(item.values.image))
+                    }
+                    input.value = ''
+                    canSend = !canSend
+                })
+
+            })
+        }
+
+    }
+</script>
 {% endblock %}
